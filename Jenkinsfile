@@ -31,20 +31,7 @@ pipeline {
     stage ('Info') {
       steps {
         echo "env.BRANCH_NAME: $env.BRANCH_NAME"
-      }
-    }
-    
-    stage ('Build') {
-      steps {
-        sh 'mvn clean test -U'
-      }
-    }
-    
-    //Sonarqube analysis on master and dev branch
-    stage('SonarMaster') {
-      when{ branch '*/master'}
-      steps { 
-        withSonarQubeEnv('sonarqube') { sh 'mvn sonar:sonar -DargLine="-Xmx256m"'}
+        echo branch
       }
     }
    
