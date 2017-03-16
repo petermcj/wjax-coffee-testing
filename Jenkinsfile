@@ -51,14 +51,9 @@ pipeline {
     
     stage('SonarDev') {
       when { branch "master" }
-      steps { 
-        expression {
-          withSonarQubeEnv('sonarqube') {
-            sh 'mvn  sonar:sonar -DargLine="-Xmx256m" -Dsonar.branch="dev"'
-          }
-        }
+      steps {
+        withSonarQubeEnv('sonarqube') { sh 'mvn  sonar:sonar -DargLine="-Xmx256m" -Dsonar.branch="dev"' }
       }
-    }
-        
+    }  
   }
 }
