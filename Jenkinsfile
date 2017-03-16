@@ -35,63 +35,13 @@ pipeline {
       }
     }
     
-    stage('Integration test') {
-      steps {
-         sh 'mvn verify'
-      }
-    }
-    stage('Site') {
-      steps {
-         sh 'mvn site'
-      }
-    }
-    
-    stage('Archive') {
-      steps {
-        sh 'mvn deploy'
-        
-        junit '**/target/surefire-reports/TEST-*.xml'
-        archive 'target/*.war'
-      }
-    }
-
-    stage('Dev Deploy') {
-      when { branch "dev"}
-      steps {
-         echo "Deploy to dev environment"
-      }
-    }
-    
-    stage('Release') {
-      when { branch "release"}
-      steps { 
-        echo "Release"
-      }
-    }
-    
-    
     //Sonarqube analysis on master and dev branch
     stage('SonarMaster') {
       when { branch "master" }
       steps { 
-        expression {
-          withSonarQubeEnv('sonarqube') {
-            sh 'mvn  sonar:sonar -DargLine="-Xmx256m"'
-          }
-        }
+        withSonarQubeEnv('sonarqube') { sh 'mvn sonar:sonar -DargLine="-Xmx256m"'}
       }
     }
-    
-    stage('SonarDev') {
-      when { branch "master" }
-      steps { 
-        expression {
-          withSonarQubeEnv('sonarqube') {
-            sh 'mvn  sonar:sonar -DargLine="-Xmx256m" -Dsonar.branch="dev"'
-          }
-        }
-      }
-    }
-    
+   
   }
 }
