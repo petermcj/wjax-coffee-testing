@@ -21,7 +21,7 @@ pipeline {
   tools {
     // Symbol for tool type and then name of configured tool installation
     maven 'Maven3' 
-    jdk 'JDK7'
+    jdk 'JDK8'
   }
   
   //triggers { cron('@daily') }
