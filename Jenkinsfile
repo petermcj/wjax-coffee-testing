@@ -42,7 +42,7 @@ pipeline {
     
     //Sonarqube analysis on master and dev branch
     stage('SonarMaster') {
-      when(branch '*/master')
+      when{ branch '*/master'}
       steps { 
         withSonarQubeEnv('sonarqube') { sh 'mvn sonar:sonar -DargLine="-Xmx256m"'}
       }
