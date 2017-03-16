@@ -28,6 +28,11 @@ pipeline {
   
   stages {
 
+    stage ('Info') {
+      steps {
+        echo "env.BRANCH_NAME: $env.BRANCH_NAME"
+      }
+    }
     
     stage ('Build') {
       steps {
@@ -37,7 +42,7 @@ pipeline {
     
     //Sonarqube analysis on master and dev branch
     stage('SonarMaster') {
-      when { branch "master" }
+      
       steps { 
         withSonarQubeEnv('sonarqube') { sh 'mvn sonar:sonar -DargLine="-Xmx256m"'}
       }
