@@ -11,7 +11,7 @@ pipeline {
   
   options {
     timestamps()
-    timeout time:5, units:'MINUTES'
+    timeout time:5, unit:'MINUTES'
     buildDiscarder(logRotator(numToKeepStr:'5'))
     disableConcurrentBuilds()
     //skipDefaultCheckout()
@@ -21,11 +21,7 @@ pipeline {
   tools {
     // Symbol for tool type and then name of configured tool installation
     maven 'Maven3' //Default maven settings i set on Jenkins!
-    jdk 'JDK7'
-  }
-  
-  triggers {
-    //cron('@daily')
+    jdk 'JDK8'
   }
   
   stages {
@@ -37,7 +33,7 @@ pipeline {
     
     stage('Integration test') {
       steps {
-         sh 'mvn verify'
+         sh 'mvn failsafe:integration-test'
       }
     }
     
