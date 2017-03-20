@@ -25,6 +25,9 @@ pipeline {
   }
   
   stages {
+    stage ('Info'){
+      echo "env.BRANCH_NAME: ${env.BRANCH_NAME}"
+    }
     stage ('Build') {
       steps {
         sh 'mvn clean test -U'
@@ -36,24 +39,13 @@ pipeline {
          sh 'mvn failsafe:integration-test'
       }
     }
-    
-    //Sonarqube analysis on master and dev branch
-    stage('SonarMaster') {
-      when { branch "master" }
+
+    stage('Sonar') {
       steps { 
-        expression {
-          withSonarQubeEnv('sonarqube') {
-            sh 'mvn  sonar:sonar -DargLine="-Xmx256m"'
-          }
+        withSonarQubeEnv('sonarqube') {
+          sh 'mvn  sonar:sonar -DargLine="-Xmx256m" -Dsonar.branch="${env.BRANCH_NAME}"'
         }
       }
     }
-    
-    stage('SonarDev') {
-      when { branch "master" }
-      steps {
-        withSonarQubeEnv('sonarqube') { sh 'mvn  sonar:sonar -DargLine="-Xmx256m" -Dsonar.branch="dev"' }
-      }
-    }  
   }
 }
