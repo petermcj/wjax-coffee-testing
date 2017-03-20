@@ -4,6 +4,7 @@ pipeline {
   
   parameters {
     booleanParam(name: 'RUN_SONAR', defaultValue: false, description: 'RUN SONAR ANALYSIS?')
+    
   }
   
   environment {
@@ -58,7 +59,8 @@ pipeline {
   
   post {
     always {
-      archive "target/**/*.[ear|war]"
+      archive "target/**/*.ear", "target/**/*.war"
+      
       junit 'target/surefire-reports/*.xml'
     }
    }
