@@ -29,9 +29,9 @@ pipeline {
   stages {
     stage ('Info'){
       steps {
-        echo 'env.BRANCH_NAME: ${BRANCH_NAME}'
-        echo 'env.BRANCH_NAME: ${BRANCH}'
-        echo branch
+        echo "env.BRANCH_NAME: ${env.BRANCH_NAME}"
+        echo "BRANCH_NAME: ${BRANCH_NAME}"
+        echo "env.JOB_NAME.replaceFirst('.+/', ''): ${env.JOB_NAME.replaceFirst('.+/', '')}"
         
       }
     }
