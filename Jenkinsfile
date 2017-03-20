@@ -30,14 +30,18 @@ pipeline {
     stage ('Info'){
       steps {
         echo 'env.BRANCH_NAME: ${BRANCH_NAME}'
+        echo 'env.BRANCH_NAME: ${BRANCH}'
+        echo branch
+        
       }
     }
+    /*
     stage ('Build') {
       steps {
         sh 'mvn clean test -U'
       }
     }
-    
+
     stage('Integration test') {
       steps {
          sh 'mvn failsafe:integration-test'
@@ -56,11 +60,12 @@ pipeline {
         }
       }
     }
+     */
   }
   
   post {
     always {
-      archive "target/**/*"
+      archive "target/**/*.[ear|war]"
       junit 'target/surefire-reports/*.xml'
     }
    }
