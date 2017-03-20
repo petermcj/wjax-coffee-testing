@@ -2,7 +2,10 @@ pipeline {
   // Possible agent configurations - you must have one and only one at the top level.
   agent any
   
-  // Global Environment
+  parameters {
+    booleanParam(name: 'RUN_SONAR', defaultValue: false, description: 'RUN SONAR ANALYSIS?')
+  }
+  
   environment {
     DEPLOY2TEST = false
     DEPLOY2PROD = false
@@ -14,7 +17,6 @@ pipeline {
     timeout time:5, unit:'MINUTES'
     buildDiscarder(logRotator(numToKeepStr:'5'))
     disableConcurrentBuilds()
-    //skipDefaultCheckout()
   }
   
   // Tools - only works when *not* on docker or dockerfile agent
@@ -27,7 +29,7 @@ pipeline {
   stages {
     stage ('Info'){
       steps {
-        echo 'env.BRANCH_NAME: ${env.BRANCH_NAME}'
+        echo 'env.BRANCH_NAME: ${BRANCH_NAME}'
       }
     }
     stage ('Build') {
@@ -43,9 +45,14 @@ pipeline {
     }
     
     stage('Sonar') {
+      when { 
+        expression {
+          return  params.RUN_SONAR
+        }
+      }
       steps { 
         withSonarQubeEnv('sonarqube') {
-          sh 'mvn  sonar:sonar -DargLine="-Xmx256m" -Dsonar.branch="${env.BRANCH_NAME}"'
+          sh 'mvn  sonar:sonar -DargLine="-Xmx256m" -Dsonar.branch="${BRANCH_NAME}"'
         }
       }
     }
