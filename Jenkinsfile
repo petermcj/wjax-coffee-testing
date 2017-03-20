@@ -26,7 +26,9 @@ pipeline {
   
   stages {
     stage ('Info'){
-      echo "env.BRANCH_NAME: ${env.BRANCH_NAME}"
+      step {
+        echo 'env.BRANCH_NAME: ${env.BRANCH_NAME}'
+      }
     }
     stage ('Build') {
       steps {
