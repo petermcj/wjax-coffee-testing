@@ -26,7 +26,7 @@ pipeline {
   
   stages {
     stage ('Info'){
-      step {
+      steps {
         echo 'env.BRANCH_NAME: ${env.BRANCH_NAME}'
       }
     }
