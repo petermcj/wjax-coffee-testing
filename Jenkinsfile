@@ -27,15 +27,7 @@ pipeline {
   }
   
   stages {
-    stage ('Info'){
-      steps {
-        echo "env.BRANCH_NAME: ${env.BRANCH_NAME}"
-        echo "BRANCH_NAME: ${BRANCH_NAME}"
-        echo "env.JOB_NAME.replaceFirst('.+/', ''): ${env.JOB_NAME.replaceFirst('.+/', '')}"
-        
-      }
-    }
-    /*
+ 
     stage ('Build') {
       steps {
         sh 'mvn clean test -U'
@@ -54,13 +46,14 @@ pipeline {
           return  params.RUN_SONAR
         }
       }
+      
       steps { 
         withSonarQubeEnv('sonarqube') {
           sh 'mvn  sonar:sonar -DargLine="-Xmx256m" -Dsonar.branch="${BRANCH_NAME}"'
         }
       }
     }
-     */
+    
   }
   
   post {
