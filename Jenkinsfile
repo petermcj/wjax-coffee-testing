@@ -41,13 +41,20 @@ pipeline {
          sh 'mvn failsafe:integration-test'
       }
     }
-
+    
     stage('Sonar') {
       steps { 
         withSonarQubeEnv('sonarqube') {
           sh 'mvn  sonar:sonar -DargLine="-Xmx256m" -Dsonar.branch="${env.BRANCH_NAME}"'
         }
       }
+    }
+    
+    post {
+        always {
+            archive "target/**/*"
+            junit 'target/surefire-reports/*.xml'
+        }
     }
   }
 }
